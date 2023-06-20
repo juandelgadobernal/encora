@@ -1,5 +1,5 @@
 # encora
-Create a Cypress exercise to book a trip and order the result by price asc
+This repository contains a 'Cypress test' exercise to validate booking a trip displaying the results by price in ascending order.
 
 ## To run
     npx cypress run
