@@ -1,5 +1,4 @@
 {
-  "pathIndex": "./site/index.html",
   "cities": ["Merida", "Hermosillo", "San Luis Potosi", "CDMX", "Chihuahua", "La Habana"],
   "nextDay": 1,
   "futureDay": 90

@@ -16,7 +16,7 @@ describe('Test Suite POC Encora',function()
     it('Sample TC', function() {
 
         //Visit Encora Test  Website
-        cy.visit(this.data.pathIndex)
+        cy.visit('./site/index.html')
 
         // Clicking on Fligths from Navigation Menu
         homePage.clickOnFlight()
@@ -24,26 +24,35 @@ describe('Test Suite POC Encora',function()
         // Verify Flights page exist
         flightsPage.assertFlightPageExist()
 
-        // Select Flights
-        let citiesList = this.data.cities
+        // Select Flights  -- Commands reusable fn 
+        cy.randomCity(this.data.cities).then((cityFrom) => {
+            cy.log('Select Flight From:', cityFrom)
+            flightsPage.selectCityFrom(cityFrom)
 
-        cy.selectFlights(citiesList).then((cities) => {
-            cy.log('Select Flight From:', cities[0])
-            flightsPage.elements.flightFrom().select(cities[0])
-
-            cy.log('Select Flight To:', cities[1])
-            flightsPage.elements.flightTo().select(cities[1])
-        })
+            // Delete City from in list to select Flight To
+            let cityToList = this.data.cities
+            const index = cityToList.indexOf(cityFrom)
+            cityToList.splice(index, 1)
+            // List of Cities without "Flight From"
+            cy.log('List Cities without "Flight From"',(JSON.stringify(cityToList)))
         
-        // Select Dates
-        cy.selectDate(this.data.nextDay).then((selectYYYYMMDD) => {
-            cy.log('Departing Date: ', selectYYYYMMDD)
-            flightsPage.elements.departingDate().type(selectYYYYMMDD)
+
+            cy.randomCity(cityToList).then((cityTo) => {
+                cy.log('Select Flight To:', cityTo)
+                flightsPage.selectCityTo(cityTo)
+            })
+        })   
+        
+
+        // Select Dates -- Commands reusable fn 
+        cy.formatDate(this.data.nextDay).then((dateFormat) => {
+            cy.log('Departing Date: ', dateFormat)
+            flightsPage.selectDateFrom(dateFormat)
         })
 
-        cy.selectDate(this.data.futureDay).then((selectYYYYMMDD) => {
-            cy.log('Departing Returning: ', selectYYYYMMDD)
-            flightsPage.elements.returningDate().type(selectYYYYMMDD)
+        cy.formatDate(this.data.futureDay).then((dateFormat) => {
+            cy.log('Departing Returning: ', dateFormat)
+            flightsPage.selectDateTo(dateFormat)
         })
 
         // Click Search
@@ -56,13 +65,10 @@ describe('Test Suite POC Encora',function()
         resultsPage.sortPriceSelect()
 
          // Verify Table exist
-        //cy.get('#results').should('exist')
         resultsPage.assertResultTableExist()
 
         // Validate Results by Price on Asc order
-        cy.validateResultsAsc().then((validationResult) => {
-            //Validation on commands.js
-        })
+        resultsPage.validateTResultsAsc()
 
     })
 })

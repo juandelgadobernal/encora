@@ -43,32 +43,20 @@ Cypress.Commands.add('selectFlights', (citiesList) => {
     return cy.wrap(cities)
 })
  
- //Select Date
- Cypress.Commands.add('selectDate', (inputDate) => { 
-    
-    let selectYYYYMMDD = dayjs().add(inputDate,'day').format("YYYY-MM-DD")
-    return cy.wrap(selectYYYYMMDD)
- })
-
- //Validate Table Asc
- Cypress.Commands.add('validateResultsAsc', () => { 
-    
-    cy.get('.flight-card .price').then(($element) => {
-            
-        for (let y = 0; y < $element.length-1; y++) {
-
-            let storeText = $element[y].textContent.replace(/[^0-9.]/g, '')      
-            let storeTextNext = $element[y+1].textContent.replace(/[^0-9.]/g, '')       
-            expect(storeTextNext >= storeText).to.be.true
-            //cy.log(storeText)
-        }
-    })
-
+ // Random City 
+ Cypress.Commands.add('randomCity', (citiesList) => { 
+    let cityRandom = citiesList[Math.floor(Math.random() * citiesList.length)]
+    return cy.wrap(cityRandom)
  })
 
 
+ // Format Date
+ Cypress.Commands.add('formatDate', (inputDate) => { 
+    
+    let dateFormat = dayjs().add(inputDate,'day').format("YYYY-MM-DD")
+    return cy.wrap(dateFormat)
+ })
 
- //
 // -- This is a child command --
 // Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
 //
