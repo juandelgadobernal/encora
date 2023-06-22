@@ -5,7 +5,7 @@ This repository contains a 'Cypress test' exercise to validate booking a trip di
 * Page Object Model (POM) as the design pattern 
 * Cypress hooks
 * Cypress fixture  (data drive JSON file)
-* Custom Commands 
+* Cypress Custom Commands 
 
 ## To run
     npx cypress run
